@@ -28,7 +28,12 @@ router.get('/', async (req, res) => {
       }]);
     }
 
-    res.json(sneakers);
+    const processedSneakers = sneakers.map(sneaker => ({
+      ...sneaker,
+      sizes: typeof sneaker.sizes === 'string' ? JSON.parse(sneaker.sizes) : sneaker.sizes || []
+    }));
+
+    res.json(processedSneakers);
   } catch (error) {
     console.error('Error fetching sneakers:', error);
     res.status(500).json({ error: 'Error fetching sneakers' });
