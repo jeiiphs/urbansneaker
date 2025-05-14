@@ -1,11 +1,10 @@
 import express from 'express';
-import { db } from '../index.js';
 
 const router = express.Router();
 
 // Get all promotions
 router.get('/', (req, res) => {
-  db.all(
+  req.db.all(
     `SELECT 
       id,
       title,

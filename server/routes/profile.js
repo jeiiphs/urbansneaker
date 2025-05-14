@@ -1,11 +1,10 @@
 import express from 'express';
-import { db } from '../index.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.get('/', authenticateToken, (req, res) => {
-  db.get(
+  req.db.get(
     'SELECT id, email, first_name, last_name, phone, is_admin FROM users WHERE id = ?',
     [req.user.id],
     (err, user) => {
@@ -27,7 +26,7 @@ router.get('/', authenticateToken, (req, res) => {
 router.put('/', authenticateToken, (req, res) => {
   const { firstName, lastName, phone } = req.body;
 
-  db.run(
+  req.db.run(
     'UPDATE users SET first_name = ?, last_name = ?, phone = ? WHERE id = ?',
     [firstName, lastName, phone, req.user.id],
     (err) => {
